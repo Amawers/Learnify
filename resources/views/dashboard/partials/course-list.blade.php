@@ -1,13 +1,13 @@
-<?php $userData = [
+ {{-- $userData = [
             ["name" => "Christian Jericho Dacoroon", "course" => "HTML", "value" => "10"],
             ["name" => "Mike John Paul Cana", "course" => "CSS", "value" => "20"],
             ["name" => "Daryl James Nangcas", "course" => "JS", "value" => "30"],
             ["name" => "Divina Karla Barcelo", "course" => "LARAVEL", "value" => "40"],
             ["name" => "Verseler Kerr Handuman", "course" => "TAILWIND", "value" => "50"],
-      ];
-?>
+      ]; --}}
+
 <div class="flex flex-wrap">
-    @foreach ($userData as $data)
+    @foreach ($data as $data)
     <div class="card w-96 bg-base-100 shadow-xl mb-10 ml-4">
         <div class="flex items-center mt-3 -mb-5 z-10">
             <x-instructor-image />
