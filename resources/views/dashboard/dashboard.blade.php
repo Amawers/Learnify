@@ -9,6 +9,6 @@
     </div>
     <div class="p-7">
         <span class="text-3xl font-extrabold block mb-4">Courses</span>
-        @include('dashboard.partials.course-list')
+        @include('dashboard.partials.course-list', ['course' => $course])
     </div>
 </x-app-layout>
