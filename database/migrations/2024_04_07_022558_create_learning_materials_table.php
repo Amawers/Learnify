@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('image_path');
             $table->string('lesson_name');
             $table->foreignId('course_id')
-                    ->constrained(table: 'courses', column: 'course_id')
+                    ->constrained(table: 'courses', column: 'id')
                     ->cascadeOnDelete();
             $table->timestamps();
         });
