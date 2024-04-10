@@ -9,6 +9,10 @@
     </div>
     <div class="p-7">
         <span class="text-3xl font-extrabold block mb-4">Courses</span>
-        @include('dashboard.partials.course-list', ['course' => $course])
+        @if (!empty($course))
+            @include('dashboard.partials.course-list', ['course' => $course]);
+        @else
+            <p class="flex justify-center items-center h-32 font-extrabold">No Course Enrolled</p>
+        @endif
     </div>
 </x-app-layout>

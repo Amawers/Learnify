@@ -3,42 +3,38 @@
         {{-- header --}}
         <div class="flex items-center">
             <x-instructor-image />
-            <x-instructor-name :name="__('Christian Dacoroon')" />
+            <x-instructor-name :name="$instructor_name" />
         </div>
 
         {{-- course info --}}
         <div class="flex-col items-center m-10">
-            <span class="text-3xl font-extrabold">HTML Course</span>
-            <p class="font-bold">Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus consequuntur porro
-                quisquam nam.
-                Quia, vitae atque voluptatibus, esse facilis aut hic excepturi quos et totam exercitationem? Culpa quas
-                deleniti soluta?
-                Doloribus, eveniet nemo. Ea laborum officiis repellat dolorem aperiam architecto dolores necessitatibus
-                itaque repellendus mollitia suscipit optio quos ullam, est odit voluptatibus, distinctio fuga dolorum
-                facilis iusto nostrum magnam. Alias?
-            </p>
+            <span class="text-3xl font-extrabold">{{ $title }} Course</span>
+            <p class="font-bold">{{ $description }}</p>
         </div>
 
         {{-- objectives --}}
         <div class="flex-col items-center m-10">
             <span class="block font-extrabold">Course Objectives</span>
-            <x-course-objective />
+            @foreach ($objectives as $objective)
+                <x-course-objective :val="__($objective)"/>
+            @endforeach
         </div>
 
         {{-- topics --}}
         <div class="flex-col items-center m-10">
             <span class="block font-extrabold">Course Topics</span>
-            <x-course-topic />
+            @foreach ($topics as $topic)
+                <x-course-topic :val="__($topic)"/>
+            @endforeach
         </div>
 
         {{-- materials --}}
         <div>
             <span class="text-3xl font-extrabold ml-20 mb-3 block">Learning Materials</span>
             <div class="flex flex-wrap">
-                <x-learning-video />
-                <x-learning-video />
-                <x-learning-video />
-                <x-learning-video />
+                @foreach ($materials as $material)
+                    <x-learning-video :val="__($material)"/>
+                @endforeach
             </div>
         </div>
 

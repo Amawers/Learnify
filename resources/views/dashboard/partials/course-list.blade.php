@@ -23,8 +23,8 @@
           </div>
           <x-completion-percentage :value="$data['progress']"/>
           <div class="flex justify-start w-72">
-            <x-primary-button onclick="window.location='{{ url('/course') }}'">View Course</x-primary-button>
-          </div>
+            <x-primary-button onclick="window.location='{{ route('course', ['course_id' => $data['course_id']]) }}'">View Course</x-primary-button>
+        </div>
         </div>
     </div>
     @endforeach
