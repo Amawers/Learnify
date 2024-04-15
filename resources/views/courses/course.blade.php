@@ -42,7 +42,11 @@
         <div class="card w-11/12 bg-base-100 shadow-xl ml-12  mb-7">
             <div class="card-body w-full flex flex-row items-center">
                 <x-file-image />
+                {{-- @foreach ($files as $file) --}}
+                    {{-- <x-file-title :val="__($file)"/> --}}
+                {{-- @endforeach --}}
                 <x-file-title />
+
             </div>
         </div>
 

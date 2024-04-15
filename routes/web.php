@@ -3,27 +3,52 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Course;
+use App\Models\User;
+use Illuminate\Http\Request;
 
-Route::get('/test', function () {
-    $id = Auth::id();
-    $data = Course::all()->where('user_id', '=', $id);
-    return response()->json($data);
-});
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-// Route::get('/dashboard', function () {
-//     $id = Auth::id();
-//     $data = Course::all()->where('user_id', '=', $id);
-//     return view('dashboard.dashboard', ['course' => $data]);
-// })->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', function () {
+    $data = User::find(Auth::id())->select('id')->first();
+    $courseDataArr = array();
+    foreach($data->courses as $course){
+        $courseId = $course->id;
+        $imagePath = $course->image_path;
+        $instructorName = $course->instructor_name;
+        $title = $course->title;
+        $progress = $course->progress;
 
-Route::get('/course', function(){
+        array_push($courseDataArr, ['course_id' => $courseId, 'instructor_name' => $instructorName, 'image_path' => $imagePath, 'title' => $title, 'progress' => $progress]);
+    }
+    return view('dashboard.dashboard', ['course' => $courseDataArr]);
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-    return view('courses.course');
-});
+Route::get('/course/{course_id}', function($course_id){
+    $course = Course::find($course_id);
+    $courseDetail = Course::find($course_id)->course_detail;
+    $courseObjective = Course::find($course_id)->course_objective;
+    $objectivesArr = array();
+    foreach($courseObjective as $objective){
+        array_push($objectivesArr ,$objective->objective);
+    }
+
+    $courseTopic = Course::find($course_id)->course_topic;
+    $topicsArr = array();
+    foreach($courseTopic as $topic){
+        array_push($topicsArr ,$topic->topic);
+    }
+
+    $learningMaterial = Course::find($course_id)->learning_material;
+    $materialsArr = array();
+    foreach($learningMaterial as $material){
+        array_push($materialsArr, $material->lesson_name);
+    }
+
+    return view('courses.course', ['instructor_name' => $course->instructor_name,  'title' => $course->title, 'description' => $courseDetail->first()->description, 'objectives' => $objectivesArr, 'topics' => $topicsArr, 'materials' => $materialsArr]);
+})->name('course');
 
 
 Route::get('/quiz', function(){

@@ -1,3 +1,9 @@
+<?php
+    $test = [
+        [1, 2, 3],
+        [4, 5, 6]
+    ];
+?>
 <x-app-layout>
     {{-- <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
