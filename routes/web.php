@@ -13,8 +13,8 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
     $data = User::find(Auth::id())->select('id')->first();
-    $courseDataArr = array();
-    foreach($data->courses as $course){
+    $courseDataArr = array ();
+    foreach ($data->courses as $course) {
         $courseId = $course->id;
         $imagePath = $course->image_path;
         $instructorName = $course->instructor_name;
@@ -26,32 +26,44 @@ Route::get('/dashboard', function () {
     return view('dashboard.dashboard', ['course' => $courseDataArr]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/course/{course_id}', function($course_id){
+Route::get('/course/{course_id}', function ($course_id) {
     $course = Course::find($course_id);
     $courseDetail = Course::find($course_id)->course_detail;
     $courseObjective = Course::find($course_id)->course_objective;
-    $objectivesArr = array();
-    foreach($courseObjective as $objective){
-        array_push($objectivesArr ,$objective->objective);
+    $objectivesArr = array ();
+    foreach ($courseObjective as $objective) {
+        array_push($objectivesArr, $objective->objective);
     }
 
     $courseTopic = Course::find($course_id)->course_topic;
-    $topicsArr = array();
-    foreach($courseTopic as $topic){
-        array_push($topicsArr ,$topic->topic);
+    $topicsArr = array ();
+    foreach ($courseTopic as $topic) {
+        array_push($topicsArr, $topic->topic);
     }
 
     $learningMaterial = Course::find($course_id)->learning_material;
-    $materialsArr = array();
-    foreach($learningMaterial as $material){
+    $materialsArr = array ();
+    foreach ($learningMaterial as $material) {
         array_push($materialsArr, $material->lesson_name);
     }
 
-    return view('courses.course', ['instructor_name' => $course->instructor_name,  'title' => $course->title, 'description' => $courseDetail->first()->description, 'objectives' => $objectivesArr, 'topics' => $topicsArr, 'materials' => $materialsArr]);
+    $files = Course::find($course_id)->files;
+    $filesArr = array ();
+    foreach ($files as $files) {
+        array_push($filesArr, $files->file_name);
+    }
+
+    $activities = Course::find($course_id)->activities;
+    $activitiesArr = array ();
+    foreach ($activities as $activity) {
+        array_push($activitiesArr, $activity->quiz_name);
+    }
+
+    return view('courses.course', ['instructor_name' => $course->instructor_name, 'title' => $course->title, 'description' => $courseDetail->first()->description, 'objectives' => $objectivesArr, 'topics' => $topicsArr, 'materials' => $materialsArr, 'activities' => $activitiesArr, 'files' => $filesArr]);
 })->name('course');
 
 
-Route::get('/quiz', function(){
+Route::get('/quiz', function () {
     return view('activities.quiz');
 });
 
@@ -64,4 +76,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

@@ -16,7 +16,7 @@
         <div class="flex-col items-center m-10">
             <span class="block font-extrabold">Course Objectives</span>
             @foreach ($objectives as $objective)
-                <x-course-objective :val="__($objective)"/>
+                <x-course-objective :val="__($objective)" />
             @endforeach
         </div>
 
@@ -24,7 +24,7 @@
         <div class="flex-col items-center m-10">
             <span class="block font-extrabold">Course Topics</span>
             @foreach ($topics as $topic)
-                <x-course-topic :val="__($topic)"/>
+                <x-course-topic :val="__($topic)" />
             @endforeach
         </div>
 
@@ -33,34 +33,35 @@
             <span class="text-3xl font-extrabold ml-20 mb-3 block">Learning Materials</span>
             <div class="flex flex-wrap">
                 @foreach ($materials as $material)
-                    <x-learning-video :val="__($material)"/>
+                    <x-learning-video :val="__($material)" />
                 @endforeach
             </div>
         </div>
 
         {{-- files --}}
-        <div class="card w-11/12 bg-base-100 shadow-xl ml-12  mb-7">
-            <div class="card-body w-full flex flex-row items-center">
-                <x-file-image />
-                {{-- @foreach ($files as $file) --}}
-                    {{-- <x-file-title :val="__($file)"/> --}}
-                {{-- @endforeach --}}
-                <x-file-title />
-
+        @foreach ($files as $file)
+            <div class="card w-11/12 bg-base-100 shadow-xl ml-12  mb-7">
+                <div class="card-body w-full flex flex-row items-center">
+                    <x-file-image />
+                    <x-course-topic :val="__($file)" />
+                    <x-file-title />
+                </div>
             </div>
-        </div>
+        @endforeach
 
         {{-- activities --}}
         <div>
             <span class="text-3xl font-extrabold ml-20 mb-3 block">Activities</span>
-            <a onclick="window.location='{{ url('/quiz') }}'">
-                <div class="card w-11/12 bg-base-100 shadow-xl ml-12  mb-7">
-                    <div class="card-body w-full flex flex-row items-center">
-                        <x-file-image />
-                        <x-file-title />
+            @foreach ($activities as $activities)
+                <a onclick="window.location='{{ url('/quiz') }}'">
+                    <div class="card w-11/12 bg-base-100 shadow-xl ml-12  mb-7">
+                        <div class="card-body w-full flex flex-row items-center">
+                            <x-file-image />
+                            <x-course-topic :val="__($activities)" />
+                        </div>
                     </div>
-                </div>
-            </a>
+                </a>
+            @endforeach
         </div>
 
         {{-- forum --}}

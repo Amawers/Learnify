@@ -17,8 +17,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     // Dashboard Data
     Route::get('/dashboard', function () {
         $data = User::find(Auth::id())->select('id')->first();
-        $courseDataArr = array();
-        foreach($data->courses as $course){
+        $courseDataArr = array ();
+        foreach ($data->courses as $course) {
             $courseId = $course->id;
             $imagePath = $course->image_path;
             $instructorName = $course->instructor_name;
@@ -37,30 +37,42 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     });
 
     // Specific Course Data
-    Route::get('/course/{course_id}', function($course_id){
+    Route::get('/course/{course_id}', function ($course_id) {
         $course = Course::find($course_id);
         $courseDetail = Course::find($course_id)->course_detail;
         $courseObjective = Course::find($course_id)->course_objective;
-        $objectivesArr = array();
-        foreach($courseObjective as $objective){
-            array_push($objectivesArr ,$objective->objective);
+        $objectivesArr = array ();
+        foreach ($courseObjective as $objective) {
+            array_push($objectivesArr, $objective->objective);
         }
 
         $courseTopic = Course::find($course_id)->course_topic;
-        $topicsArr = array();
-        foreach($courseTopic as $topic){
-            array_push($topicsArr ,$topic->topic);
+        $topicsArr = array ();
+        foreach ($courseTopic as $topic) {
+            array_push($topicsArr, $topic->topic);
         }
 
         $learningMaterial = Course::find($course_id)->learning_material;
-        $materialsArr = array();
-        foreach($learningMaterial as $material){
+        $materialsArr = array ();
+        foreach ($learningMaterial as $material) {
             array_push($materialsArr, $material->lesson_name);
+        }
+
+        $files = Course::find($course_id)->files;
+        $filesArr = array ();
+        foreach ($files as $files) {
+            array_push($filesArr, $files->file_name);
+        }
+
+        $activities = Course::find($course_id)->activities;
+        $activitiesArr = array ();
+        foreach ($activities as $activity) {
+            array_push($activitiesArr, $activity->quiz_name);
         }
 
         $response = [
             'message' => 'Successfully Retrieve Specific Course Data.',
-            'data' => ['instructor_name' => $course->instructor_name,  'title' => $course->title, 'description' => $courseDetail->first()->description, 'objectives' => $objectivesArr, 'topics' => $topicsArr, 'materials' => $materialsArr],
+            'data' => ['instructor_name' => $course->instructor_name, 'title' => $course->title, 'description' => $courseDetail->first()->description, 'objectives' => $objectivesArr, 'topics' => $topicsArr, 'materials' => $materialsArr, 'files' => $filesArr, 'activities' => $activitiesArr],
             'success' => true
         ];
 
@@ -79,7 +91,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
  *
  */
 
- // SAMPLE SELECT QUERY ONE TO MAY
+// SAMPLE SELECT QUERY ONE TO MAY
 Route::get('/one-to-many', function () {
     $courseDetails = Course::find(1)->course_detail;
     return response()->json([$courseDetails]);
@@ -95,9 +107,23 @@ Route::post('/many-to-many', function (Request $request, User $user) {
 // SAMPLE RETRIEVE PIVOT TABLE
 Route::get('/retrieve-pivot', function (Request $request, User $user) {
     $userId = User::find(3);
-    $data = array();
-    foreach($userId->courses as $course){
+    $data = array ();
+    foreach ($userId->courses as $course) {
         $data = $course->image_path;
     }
     echo $data;
 });
+
+/**
+ *
+ * FOR TESTING FETCH DATA
+ *
+ */
+// Route::get('/testing/{course_id}', function ($course_id) {
+//     $activities = Course::find($course_id)->activities;
+//     $activitiesArr = array();
+//     foreach($activities as $activity){
+//         array_push($activitiesArr, $activity);
+//     }
+//     return response($activitiesArr, 200);
+// });
