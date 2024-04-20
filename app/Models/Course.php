@@ -33,14 +33,19 @@ class Course extends Model
         return $this->hasMany(LearningMaterial::class);
     }
 
+    public function files(): HasMany
+    {
+        return $this->hasMany(File::class);
+    }
+
     public function activities(): HasMany
     {
         return $this->hasMany(Activities::class);
     }
 
-    public function files(): HasMany
+    public function forums(): HasMany
     {
-        return $this->hasMany(File::class);
+        return $this->hasMany(Forums::class);
     }
 
     public function users(): BelongsToMany

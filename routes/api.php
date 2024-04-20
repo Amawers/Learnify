@@ -70,9 +70,15 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
             array_push($activitiesArr, $activity->quiz_name);
         }
 
+        $forums = Course::find($course_id)->forums;
+        $forumsArr = array ();
+        foreach ($forums as $forum) {
+            array_push($forumsArr, $forum);
+        }
+
         $response = [
             'message' => 'Successfully Retrieve Specific Course Data.',
-            'data' => ['instructor_name' => $course->instructor_name, 'title' => $course->title, 'description' => $courseDetail->first()->description, 'objectives' => $objectivesArr, 'topics' => $topicsArr, 'materials' => $materialsArr, 'files' => $filesArr, 'activities' => $activitiesArr],
+            'data' => ['instructor_name' => $course->instructor_name, 'title' => $course->title, 'description' => $courseDetail->first()->description, 'objectives' => $objectivesArr, 'topics' => $topicsArr, 'materials' => $materialsArr, 'files' => $filesArr, 'activities' => $activitiesArr, 'forums' => $forumsArr],
             'success' => true
         ];
 
@@ -119,11 +125,11 @@ Route::get('/retrieve-pivot', function (Request $request, User $user) {
  * FOR TESTING FETCH DATA
  *
  */
-// Route::get('/testing/{course_id}', function ($course_id) {
-//     $activities = Course::find($course_id)->activities;
-//     $activitiesArr = array();
-//     foreach($activities as $activity){
-//         array_push($activitiesArr, $activity);
-//     }
-//     return response($activitiesArr, 200);
-// });
+Route::get('/testing/{course_id}', function ($course_id) {
+    $forums = Course::find($course_id)->forums;
+    $forumsArr = array ();
+    foreach ($forums as $forum) {
+        array_push($forumsArr, $forum);
+    }
+    return response($forumsArr, 200);
+});
