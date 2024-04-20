@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\api\UserController;
+use App\Models\Activities;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\Course;
@@ -85,6 +86,27 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         return response($response, 200);
     });
 
+    // Specific Course Data
+    Route::get('/quiz/{quiz_id}', function ($quiz_id) {
+        $questions = Activities::find($quiz_id)->questions()->with('choices.answers')->get();
+
+        $questionsArr = [];
+        foreach ($questions as $question) {
+            $choicesArr = [];
+            foreach ($question->choices as $choice) {
+                $answersArr = [];
+                foreach ($choice->answers as $answer) {
+                    $answersArr[] = $answer;
+                }
+                $choice->answers = $answersArr;
+                $choicesArr[] = $choice;
+            }
+            $question->choices = $choicesArr;
+            $questionsArr[] = $question;
+        }
+
+        return response()->json($questionsArr, 200);
+    });
 
     // Logout Authenticated User
     Route::delete('/logout', [UserController::class, 'logout']);
@@ -125,11 +147,11 @@ Route::get('/retrieve-pivot', function (Request $request, User $user) {
  * FOR TESTING FETCH DATA
  *
  */
-Route::get('/testing/{course_id}', function ($course_id) {
-    $forums = Course::find($course_id)->forums;
-    $forumsArr = array ();
-    foreach ($forums as $forum) {
-        array_push($forumsArr, $forum);
-    }
-    return response($forumsArr, 200);
-});
+// Route::get('/testing/{course_id}', function ($course_id) {
+//     $forums = Course::find($course_id)->forums;
+//     $forumsArr = array ();
+//     foreach ($forums as $forum) {
+//         array_push($forumsArr, $forum);
+//     }
+//     return response($forumsArr, 200);
+// });

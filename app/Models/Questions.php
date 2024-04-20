@@ -6,17 +6,18 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-class Activities extends Model
+
+class Questions extends Model
 {
     use HasFactory;
 
-    public function course(): BelongsTo
+    public function choices(): HasMany
     {
-        return $this->belongsTo(Course::class);
+        return $this->hasMany(Choices::class);
     }
 
-    public function questions(): HasMany
+    public function activities(): BelongsTo
     {
-        return $this->hasMany(Questions::class);
+        return $this->belongsTo(Activities::class);
     }
 }
