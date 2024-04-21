@@ -26,15 +26,17 @@
             </div>
 
             <!-- Authentication -->
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
+            <div class="bg-red-600 text-white font-weight-bolder m-10 pl-5 pr-3 pt-2 pb-2 rounded-md w-28 cursor-pointer">
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
 
-                <a :href="route('logout')"
-                        onclick="event.preventDefault();
-                                    this.closest('form').submit();">
-                    {{ __('Log Out') }}
-                </a>
-            </form>
+                    <a :href="route('logout')"
+                            onclick="event.preventDefault();
+                                        this.closest('form').submit();">
+                        {{ __('Log Out') }}
+                    </a>
+                </form>
+            </div>
         </div>
     </div>
 </x-app-layout>
