@@ -74,7 +74,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         $forums = Course::find($course_id)->forums;
         $forumsArr = array ();
         foreach ($forums as $forum) {
-            array_push($forumsArr, $forum);
+            array_push($forumsArr, $forum->post, $forum->reply);
         }
 
         $response = [
@@ -86,7 +86,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         return response($response, 200);
     });
 
-    // Specific Course Data
+    // Quiz Data
     Route::get('/quiz/{quiz_id}', function ($quiz_id) {
         $questions = Activities::find($quiz_id)->questions()->with('choices.answers')->get();
 
