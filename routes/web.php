@@ -59,7 +59,13 @@ Route::get('/course/{course_id}', function ($course_id) {
         array_push($activitiesArr, $activity->quiz_name);
     }
 
-    return view('courses.course', ['instructor_name' => $course->instructor_name, 'title' => $course->title, 'description' => $courseDetail->first()->description, 'objectives' => $objectivesArr, 'topics' => $topicsArr, 'materials' => $materialsArr, 'activities' => $activitiesArr, 'files' => $filesArr]);
+    $forums = Course::find($course_id)->forums;
+    $forumsArr = array ();
+    foreach ($forums as $forum) {
+        array_push($forumsArr, $forum->post, $forum->reply);
+    }
+
+    return view('courses.course', ['instructor_name' => $course->instructor_name, 'title' => $course->title, 'description' => $courseDetail->first()->description, 'objectives' => $objectivesArr, 'topics' => $topicsArr, 'materials' => $materialsArr, 'activities' => $activitiesArr, 'files' => $filesArr, 'forums' => $forumsArr]);
 })->name('course');
 
 
