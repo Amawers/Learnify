@@ -68,7 +68,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         $activities = Course::find($course_id)->activities;
         $activitiesArr = array ();
         foreach ($activities as $activity) {
-            array_push($activitiesArr, $activity->quiz_name);
+            array_push($activitiesArr, [$activity->quiz_name, $activity->id]);
         }
 
         $forums = Course::find($course_id)->forums;
