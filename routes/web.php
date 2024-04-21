@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Models\Course;
 use App\Models\User;
 use Illuminate\Http\Request;
-
+use App\Models\Activities;
 
 Route::get('/', function () {
     return view('welcome');
@@ -56,7 +56,7 @@ Route::get('/course/{course_id}', function ($course_id) {
     $activities = Course::find($course_id)->activities;
     $activitiesArr = array ();
     foreach ($activities as $activity) {
-        array_push($activitiesArr, $activity->quiz_name);
+        array_push($activitiesArr, [$activity->quiz_name, $activity->id]);
     }
 
     $forums = Course::find($course_id)->forums;
@@ -69,9 +69,26 @@ Route::get('/course/{course_id}', function ($course_id) {
 })->name('course');
 
 
-Route::get('/quiz', function () {
-    return view('activities.quiz');
-});
+    Route::get('/quiz/{quiz_id}', function ($quiz_id) {
+        $questions = Activities::find($quiz_id)->questions()->with('choices.answers')->get();
+
+        $questionsArr = [];
+        foreach ($questions as $question) {
+            $choicesArr = [];
+            foreach ($question->choices as $choice) {
+                $answersArr = [];
+                foreach ($choice->answers as $answer) {
+                    $answersArr[] = $answer;
+                }
+                $choice->answers = $answersArr;
+                $choicesArr[] = $choice;
+            }
+            $question->choices = $choicesArr;
+            $questionsArr[] = $question;
+        }
+
+        return view('activities.quiz', ['data' => $questionsArr]);
+    });
 
 /**
  *  User profile routes

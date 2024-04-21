@@ -52,16 +52,17 @@
         {{-- activities --}}
         <div>
             <span class="text-3xl font-extrabold ml-20 mb-3 block">Activities</span>
-            @foreach ($activities as $activities)
-                <a onclick="window.location='{{ url('/quiz') }}'">
-                    <div class="card w-11/12 bg-base-100 shadow-xl ml-12  mb-7">
-                        <div class="card-body w-full flex flex-row items-center">
-                            <x-file-image />
-                            <x-course-topic :val="__($activities)" />
-                        </div>
+            @foreach ($activities as $activity)
+            <a onclick="window.location='{{ url("/quiz/{$activity[1]}") }}'">
+                <div class="card w-11/12 bg-base-100 shadow-xl ml-12  mb-7">
+                    <div class="card-body w-full flex flex-row items-center">
+                        <x-file-image />
+                        <x-course-topic :val="__($activity[0])" />
                     </div>
-                </a>
-            @endforeach
+                </div>
+            </a>
+        @endforeach
+
         </div>
 
         {{-- forum --}}
